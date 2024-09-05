@@ -2,7 +2,6 @@ var express = require('express'),
     async = require('async'),
     { Pool } = require('pg'),
     cookieParser = require('cookie-parser'),
-    path = require('path'),  // Required for resolving paths
     app = express(),
     server = require('http').Server(app),
     io = require('socket.io')(server);
@@ -66,10 +65,10 @@ function collectVotesFromResult(result) {
 
 app.use(cookieParser());
 app.use(express.urlencoded());
-app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(__dirname + '/views'));
 
-app.get('/result', function (req, res) {
-  res.sendFile(path.resolve(__dirname + '/views/result.html'));
+app.get('/', function (req, res) {
+  res.sendFile(path.resolve(__dirname + '/views/index.html'));
 });
 
 server.listen(port, function () {
