@@ -15,7 +15,7 @@ spec:
         app: result
     spec:
       containers:
-      - image: 415916042243.dkr.ecr.ap-south-1.amazonaws.com/frontend-result:24
+      - image: 415916042243.dkr.ecr.ap-south-1.amazonaws.com/frontend-result:25
         name: result
         ports:
         - containerPort: 80
