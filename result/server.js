@@ -10,7 +10,8 @@ var express = require('express'),
 var port = process.env.PORT || 4000;
 
 io.on('connection', function (socket) {
-  socket.emit('message', { text: 'Welcome!' });
+
+  socket.emit('message', { text : 'Welcome!' });
 
   socket.on('subscribe', function (data) {
     socket.join(data.channel);
@@ -22,7 +23,7 @@ var pool = new Pool({
 });
 
 async.retry(
-  { times: 1000, interval: 1000 },
+  {times: 1000, interval: 1000},
   function(callback) {
     pool.connect(function(err, client, done) {
       if (err) {
@@ -49,12 +50,12 @@ function getVotes(client) {
       io.sockets.emit("scores", JSON.stringify(votes));
     }
 
-    setTimeout(function() { getVotes(client); }, 1000);
+    setTimeout(function() {getVotes(client) }, 1000);
   });
 }
 
 function collectVotesFromResult(result) {
-  var votes = { a: 0, b: 0 };
+  var votes = {a: 0, b: 0};
 
   result.rows.forEach(function (row) {
     votes[row.vote] = parseInt(row.count);
@@ -63,20 +64,15 @@ function collectVotesFromResult(result) {
   return votes;
 }
 
-// Middleware for parsing cookies and URL-encoded bodies
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
-
-// Serve static files from the 'views' directory at the /result path
-// app.use('/result', express.static(path.join(__dirname, + '/views')));
+app.use(express.urlencoded());
 app.use(express.static(__dirname + '/views'));
 
-// Serve 'result.html' at the '/result' path
 app.get('/result', function (req, res) {
   res.sendFile(path.resolve(__dirname + '/views/result.html'));
 });
 
-// Start the server and listen on the defined port
 server.listen(port, function () {
+  var port = server.address().port;
   console.log('App running on port ' + port);
 });
