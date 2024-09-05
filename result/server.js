@@ -68,11 +68,12 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the 'views' directory at the /result path
-app.use('/result', express.static(path.join(__dirname, + '/views')));
+// app.use('/result', express.static(path.join(__dirname, + '/views')));
+app.use(express.static(__dirname + '/views'));
 
 // Serve 'result.html' at the '/result' path
 app.get('/result', function (req, res) {
-  res.sendFile(path.resolve(__dirname, '/views/result.html'));
+  res.sendFile(path.resolve(__dirname + '/views/result.html'));
 });
 
 // Start the server and listen on the defined port
