@@ -18,12 +18,12 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git credentialsId: 'GITHUB', url: 'https://github.com/volley123/End-to-End-Kubernetes-Three-Tier-DevSecOps-Project.git'
+                git branch: 'dev', credentialsId: 'GITHUB', url: 'https://github.com/volley123/example-voting-app.git'
             }
         }
         stage('Sonarqube Analysis') {
             steps {
-                dir('Application-Code/frontend') {
+                dir('vote') {
                     withSonarQubeEnv('sonar-server') {
                         sh ''' $SCANNER_HOME/bin/sonar-scanner \
                         -Dsonar.projectName=frontend \
@@ -57,7 +57,7 @@ pipeline {
         stage("Docker Image Build") {
             steps {
                 script {
-                    dir('Application-Code/frontend') {
+                    dir('vote') {
                             sh 'docker system prune -f'
                             sh 'docker container prune -f'
                             sh 'docker build -t ${AWS_ECR_REPO_NAME} .'
@@ -82,29 +82,29 @@ pipeline {
         }
         stage('Checkout Code') {
             steps {
-                git credentialsId: 'GITHUB', url: 'https://github.com/volley123/End-to-End-Kubernetes-Three-Tier-DevSecOps-Project.git'
+                git branch: 'dev', credentialsId: 'GITHUB', url: 'https://github.com/volley123/example-voting-app.git'
             }
         }
-        stage('Update Deployment file') {
+        stage('Update vote-deployment file') {
             environment {
-                GIT_REPO_NAME = "End-to-End-Kubernetes-Three-Tier-DevSecOps-Project"
+                GIT_REPO_NAME = "example-voting-app"
                 GIT_USER_NAME = "volley123"
             }
             steps {
-                dir('Kubernetes-Manifests-file/Frontend') {
+                dir('k8s-specifications/frontend-vote-manifest') {
                     withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                         sh '''
                             git config user.email "devopstest@gmail.com"
-                            git config user.name "volley123"
+                            git config user.name "Varshil2298"
                             git status
                             BUILD_NUMBER=${BUILD_NUMBER}
                             echo $BUILD_NUMBER
-                            imageTag=$(grep -oP '(?<=frontend:)[^ ]+' deployment.yaml)
+                            imageTag=$(grep -oP '(?<=frontend-vote:)[^ ]+' vote-deployment.yaml)
                             echo $imageTag
-                            sed -i "s/${AWS_ECR_REPO_NAME}:${imageTag}/${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}/" deployment.yaml
-                            git add deployment.yaml
-                            git commit -m "Update deployment Image to version \${BUILD_NUMBER}"
-                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:master
+                            sed -i "s/${AWS_ECR_REPO_NAME}:${imageTag}/${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}/" vote-deployment.yaml
+                            git add vote-deployment.yaml
+                            git commit -m "Update vote-deployment Image to version \${BUILD_NUMBER}"
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:dev
                         '''
                     }
                 }
