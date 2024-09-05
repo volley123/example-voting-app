@@ -69,9 +69,9 @@ app.use(express.urlencoded());
 app.use(express.static(__dirname + '/views'));
 
 // Root path serving the index.html
-app.get('/', function (req, res) {
-  res.sendFile(path.resolve(__dirname + '/views/result.html'));
-});
+// app.get('/', function (req, res) {
+//   res.sendFile(path.resolve(__dirname + '/views/result.html'));
+// });
 
 // /result path serving the result.html
 app.get('/result', function (req, res) {
