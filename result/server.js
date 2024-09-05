@@ -75,7 +75,7 @@ app.get('/', function (req, res) {
 
 // /result path serving the result.html
 app.get('/result', function (req, res) {
-  res.sendFile(path.resolve(__dirname + '/views/index.html'));
+  res.sendFile(path.resolve(__dirname + '/views/result.html'));
 });
 
 server.listen(port, function () {
