@@ -18,9 +18,6 @@ RUN npm ci && \
 
 COPY . .
 
-# Explicitly copy the views directory to ensure static files are in place
-COPY views /usr/local/app/views
-
 ENV PORT 80
 EXPOSE 80
 

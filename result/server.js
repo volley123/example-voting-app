@@ -67,8 +67,8 @@ function collectVotesFromResult(result) {
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from the 'views' directory
-app.use(express.static(path.join(__dirname, 'views')));
+// Serve static files from the 'views' directory at the /result path
+app.use('/result', express.static(path.join(__dirname, 'views')));
 
 // Serve 'result.html' at the '/result' path
 app.get('/result', function (req, res) {
