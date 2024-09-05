@@ -16,6 +16,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: result-service
+                name: result
                 port:
                   number: 5001
