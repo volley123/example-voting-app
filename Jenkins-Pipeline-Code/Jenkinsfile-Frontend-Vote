@@ -49,7 +49,7 @@ pipeline {
         // }
         stage('Trivy File Scan') {
             steps {
-                dir('Application-Code/frontend') {
+                dir('vote') {
                     sh 'trivy fs . > trivyfs.txt'
                 }
             }
